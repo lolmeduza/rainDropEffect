@@ -1,5 +1,5 @@
-const myImage = new Image();
-myImage.src = "../rainUmbrella.jpg";
+// const myImage = new Image();
+myImage = document.getElementById("rainUmbrella");
 
 myImage.addEventListener("load", function () {
   const canvas = document.getElementById("canvas1");
