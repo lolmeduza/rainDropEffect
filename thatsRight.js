@@ -33,7 +33,7 @@ myImage.addEventListener("load", function () {
   canvas.addEventListener("mousedown", (e) => {
     // Создаем волну в точке клика
     const wave = {
-      x: e.clientX - canvasPosition.left - 50,
+      x: e.clientX - canvasPosition.left ,
       y: e.clientY - canvasPosition.top,
       radius: 0, // Начальный радиус
       maxRadius: 400, // Максимальный радиус волны
