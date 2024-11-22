@@ -16,22 +16,30 @@ myImage.addEventListener("load", function () {
   let mappedImage = [];
   const mouse = { x: undefined, y: undefined, radius: 300 };
   const canvasPosition = canvas.getBoundingClientRect();
+  const waves = []; // Массив для хранения волн
 
+  // Обработчики мыши
   canvas.addEventListener("mousemove", (e) => {
     mouse.x = e.clientX - canvasPosition.left;
     mouse.y = e.clientY - canvasPosition.top;
   });
 
-  // Обработчики мыши
-  //   canvas.addEventListener("mousemove", (e) => {
-  //     mouse.x = e.offsetX;
-  //     mouse.y = e.offsetY;
-  //     console.log(mouse);
-  //   });
-
   canvas.addEventListener("mouseleave", () => {
     mouse.x = undefined;
     mouse.y = undefined;
+  });
+
+  // Добавление эффекта волны при клике
+  canvas.addEventListener("mousedown", (e) => {
+    // Создаем волну в точке клика
+    const wave = {
+      x: e.clientX - canvasPosition.left - 50,
+      y: e.clientY - canvasPosition.top,
+      radius: 0, // Начальный радиус
+      maxRadius: 400, // Максимальный радиус волны
+      speed: 4, // Скорость распространения волны
+    };
+    waves.push(wave);
   });
 
   // Построение карты яркости
@@ -125,6 +133,21 @@ myImage.addEventListener("load", function () {
     ctx.globalAlpha = 0.3;
     ctx.fillStyle = "rgb(0,0,0)";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Рисуем и обновляем волны
+    waves.forEach((wave, index) => {
+      ctx.beginPath();
+      ctx.arc(wave.x, wave.y, wave.radius, 0, Math.PI * 2);
+      ctx.strokeStyle = "rgba(255, 255, 255, 0.5)";
+      ctx.lineWidth = 32;
+      ctx.stroke();
+      wave.radius += wave.speed; // Увеличиваем радиус волны
+
+      // Удаляем волну, если она превысила максимальный радиус
+      if (wave.radius > wave.maxRadius) {
+        waves.splice(index, 1);
+      }
+    });
 
     particlesArray.forEach((particle) => {
       particle.update();
